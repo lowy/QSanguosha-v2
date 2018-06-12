@@ -370,15 +370,7 @@ linux{
 
 CONFIG(audio){
     DEFINES += AUDIO_SUPPORT
-    INCLUDEPATH += include/fmod
-    CONFIG(debug, debug|release): LIBS += -lfmodexL
-    else:LIBS += -lfmodex
     SOURCES += src/core/audio.cpp
-
-    android{
-        CONFIG(debug, debug|release):ANDROID_EXTRA_LIBS += $$ANDROID_LIBPATH/libfmodexL.so
-        else:ANDROID_EXTRA_LIBS += $$ANDROID_LIBPATH/libfmodex.so
-    }
 }
 
 CONFIG(lua){
