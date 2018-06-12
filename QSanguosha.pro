@@ -3,7 +3,11 @@
 # -------------------------------------------------
 TARGET = QSanguosha
 QT += network widgets
-!winrt: QT += declarative
+greaterThan(QT_MAJOR_VERSION, 4) {
+	!winrt: QT += qml quick
+} else {
+	!winrt: QT += declarative
+}
 TEMPLATE = app
 
 CONFIG += lua
