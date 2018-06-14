@@ -2059,7 +2059,8 @@ public:
 
         QList<ServerPlayer *> players = room->getOtherPlayers(player);
         players.removeAll(dying.who);
-        ServerPlayer *target = room->askForPlayerChosen(player, players, objectName(), "ChenqingAsk", true, true);
+        QString prompt = QString("@ChenqingAsk:%1").arg(dying.who->objectName());
+        ServerPlayer *target = room->askForPlayerChosen(player, players, objectName(), prompt, true, true);
         if (target && target->isAlive()) {
             target->drawCards(4, objectName());
             const Card *card = NULL;
@@ -2067,8 +2068,10 @@ public:
                 DummyCard *dm = new DummyCard;
                 dm->addSubcards(target->getCards("he"));
                 card = dm;
-            } else
-                card = room->askForExchange(target, "Chenqing", 4, 4, false, "ChenqingDiscard");
+            } else {
+                prompt = QString("@ChenqingDiscard:%1:%2").arg(player->objectName()).arg(dying.who->objectName());
+                card = room->askForExchange(target, "Chenqing", 4, 4, false, prompt);
+            }
             QSet<Card::Suit> suit;
             foreach (int id, card->getSubcards()) {
                 const Card *c = Sanguosha->getCard(id);
