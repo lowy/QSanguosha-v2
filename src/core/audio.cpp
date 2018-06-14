@@ -42,10 +42,8 @@ private:
 void Audio::init()
 {
     BgmList = new QMediaPlaylist();
-    BgmList->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
     BackgroudMusic = new Sound();
     BackgroudMusic->setPlaylist(BgmList);
-    BgmList->setCurrentIndex(1);
 }
 
 void Audio::quit()
@@ -79,13 +77,18 @@ void Audio::stop()
 
 void Audio::playBGM(const QString &filename)
 {
-    BackgroudMusic->setSource(filename);
+    if (BackgroudMusic->isPlaying()) {
+        BackgroudMusic->stop();
+        BgmList->removeMedia(BgmList->currentIndex());
+    }
+    BgmList->addMedia(QUrl::fromLocalFile(filename));
+    BgmList->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
     BackgroudMusic->play();
 }
 
 void Audio::setBGMVolume(float volume)
 {
-    BackgroudMusic->setVolume(volume);
+    BackgroudMusic->setVolume(100 * volume);
 }
 
 void Audio::stopBGM()
