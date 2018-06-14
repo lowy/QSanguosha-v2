@@ -113,7 +113,178 @@ anxu_skill = {
 }
 table.insert(sgs.ai_skills, anxu_skill)
 sgs.ai_skill_use_func["OlAnxuCard"] = function(card, use, self)
-    --
+    local others = self.room:getOtherPlayers(self.player)
+	local function getGiveLevel(target)
+		local level = 0
+		if target:hasSkill("tuntian") then
+			level = level - 3
+		end
+		if target:getHandcardNum() == 1 then
+			if self:needKongcheng(target) then
+				level = level - 2
+			end
+			if target:hasSkill("beifa") then
+				local can_slash = false
+				local enemies = self:getEnemies(target)
+				for _,p in ipairs(enemies) do
+					if target:canSlash(p) then
+						can_slash = true
+						break
+					end
+				end
+				if can_slash then
+					level = level - 5
+				else
+					level = level + 4
+				end
+			end
+		end
+		if self:hasLoseHandcardEffective(target) then
+			if self:isWeak(target) then
+				level = level + 2
+			end
+		else
+			level = level - 1
+		end
+		if self:isFriend(target) then
+			level = - level
+		end
+		return 10 + level
+	end
+	local function getReceiveLevel(target)
+		local level = 0
+		if target:hasSkill("manjuan") then
+			level = level + 5
+		else
+			if target:isKongcheng() and self:needKongcheng(target, true) then
+				level = level - 2
+			end
+			if self:isWeak(target) then
+				level = level - 2
+			end
+		end
+		if self:isFriend(target) then
+			level = - level
+		end
+		return 10 + level
+	end
+	local others = self.room:getOtherPlayers(self.player)
+	local friends, enemies, unknowns = {}, {}, {}
+	for _,p in sgs.qlist(others) do
+		if self:isFriend(p) then
+			table.insert(friends, p)
+		elseif self:isEnemy(p) then
+			table.insert(enemies, p)
+		else
+			table.insert(unknowns, p)
+		end
+	end
+	local has_friend, has_enemy, has_others = false, false, false
+	local givers, receivers = {}, {}
+	local role_flag = {}
+	if #friends > 0 then
+		has_friend = true
+		self:sort(friends, "defense")
+		for _,friend in ipairs(friends) do
+			table.insert(receivers, friend)
+			role_flag[friend:objectName()] = 1
+		end
+	end
+	if #unknowns > 0 then
+		has_others = true
+		self:sort(unknowns, "handcard")
+		for _,p in ipairs(unknowns) do
+			table.insert(receivers, p)
+		end
+	end
+	if #enemies > 0 then
+		has_enemy = true
+		self:sort(enemies, "threat")
+		for index=#enemies, 1, -1 do
+			table.insert(receivers, enemies[index])
+		end
+	end
+	if has_enemy then
+		for _,enemy in ipairs(enemies) do
+			table.insert(givers, enemy)
+			role_flag[enemy:objectName()] = -1
+		end
+	end
+	if has_others then
+		for index=#unknowns, 1, -1 do
+			table.insert(givers, unknowns[index])
+		end
+	end
+	if has_friend then
+		for index=#friends, 1, -1 do
+			table.insert(givers, unknowns[index])
+		end
+	end
+	local targetA, targetB = nil, nil
+	local giver_levels = {}
+	local receiver_levels = {}
+	for _,giver in ipairs(givers) do
+		local numA = giver:getHandcardNum()
+		local numB = numA - 2
+		local levelA = getGiveLevel(giver)
+		for _,receiver in ipairs(receivers) do
+			if receiver:getHandcardNum() == numB then
+				local levelB = getReceiveLevel(receiver)
+				if levelA + levelB >= 15 then
+					targetA, targetB = giver, receiver
+					break
+				end
+				receiver_levels[receiver:objectName()] = levelB
+			end
+		end
+		if targetA and targetB then
+			break
+		end
+		giver_levels[giver:objectName()] = levelA
+	end
+	if not targetA then
+		local max_value = 0
+		local total = self.room:alivePlayerCount()
+		for indexA, giver in ipairs(givers) do
+			local numA = giver:getHandcardNum()
+			local flagA = role_flag[giver:objectName()] or 0
+			local levelA = giver_levels[giver:objectName()] or getGiveLevel(giver)
+			giver_levels[giver:objectName()] = levelA
+			for indexB, receiver in ipairs(receivers) do
+				local numB = receiver:getHandcardNum()
+				if numA > numB then
+					local flagB = role_flag[receiver:objectName()] or 0
+					local levelB = receiver_levels[receiver:objectName()] or getReceiveLevel(receiver)
+					receiver_levels[receiver:objectName()] = levelB
+					local value = (total - indexA) * levelA + (total - indexB) * levelB
+					if flagA == 0 and flagB == 0 then --Both are unknowns.
+						value = value - 50
+					elseif flagA == 1 and flagB == 1 then --Both are friends.
+						value = value - 35
+					elseif flagA == -1 and flagB == 1 then --From enemy to friend.
+						value = value + 10
+					elseif flagA == 0 and flagB == 1 then --From unknown to friend.
+						value = value + 5
+					elseif flagA == 1 and flagB < 1 then --From friend to enemy or unknown.
+						value = value - 1000
+					elseif flagA == 0 and flagB == -1 then --From unknown to enemy.
+						value = value - 500
+					end
+					if value > max_value then
+						targetA, targetB = giver, receiver
+						max_value = value
+					end
+				end
+			end
+		end
+	end
+	if targetA and targetB then
+		use.card = card
+		if use.to then
+			use.to:append(targetA)
+			use.to:append(targetB)
+		end
+	end
 end
 --room->askForExchange(playerA, "olanxu", 1, 1, false, QString("@olanxu:%1:%2").arg(source->objectName()).arg(playerB->objectName()))
 sgs.ai_skill_discard["olanxu"] = function(self, discard_num, min_num, optional, include_equip)
@@ -121,7 +292,7 @@ sgs.ai_skill_discard["olanxu"] = function(self, discard_num, min_num, optional, 
     local target = nil
     for _,p in sgs.qlist(others) do
         if p:hasFlag("olanxu_target") then
-            target = nil
+            target = p
             break
         end
     end
