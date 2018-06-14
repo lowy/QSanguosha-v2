@@ -17,11 +17,8 @@
 #include <QtWidgets>
 
 #ifndef Q_OS_WINRT
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-#include <QtDeclarative>
-#else
-//TODO: Use QtQuick instead of QtDeclarative.
-#endif
+#include <QtQuick>
+#include <QtQml>
 #endif
 
 //#include <fmod.hpp>

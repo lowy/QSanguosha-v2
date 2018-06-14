@@ -385,16 +385,9 @@ RoomScene::RoomScene(QMainWindow *main_window)
 
 
 #ifndef Q_OS_WINRT
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-    _m_animationEngine = new QDeclarativeEngine(this);
-    _m_animationContext = new QDeclarativeContext(_m_animationEngine->rootContext(), this);
-    _m_animationComponent = new QDeclarativeComponent(_m_animationEngine, QUrl::fromLocalFile("ui-script/animation_qt4.qml"), this);
-#else
-	//Qt5: Use QtQuick instead of QtDeclarative.
 	_m_animationEngine = new QQmlEngine(this);
 	_m_animationContext = new QQmlContext(_m_animationEngine->rootContext(), this);
 	_m_animationComponent = new QQmlComponent(_m_animationEngine, QUrl::fromLocalFile("ui-script/animation.qml"), this);
-#endif
 #endif
 }
 

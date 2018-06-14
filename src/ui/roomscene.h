@@ -37,16 +37,9 @@ class QSanSelectableItem;
 class EffectAnimation;
 
 #ifndef Q_OS_WINRT
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-#include <QDeclarativeEngine>
-#include <QDeclarativeContext>
-#include <QDeclarativeComponent>
-#else
-//Qt5: Use QtQuick instead of QtDeclarative.
-#include "QtQml\qqmlengine.h"
-#include "QtQml\qqmlcontext.h"
-#include "QtQml\qqmlcomponent.h"
-#endif
+#include <QQmlEngine>
+#include <QQmlContext>
+#include <QQmlComponent>
 #endif
 
 class ScriptExecutor : public QDialog
@@ -389,16 +382,9 @@ private:
 
 #ifndef Q_OS_WINRT
     // for animation effects
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-    QDeclarativeEngine *_m_animationEngine;
-    QDeclarativeContext *_m_animationContext;
-    QDeclarativeComponent *_m_animationComponent;
-#else
-	//Qt5: Use QtQuick instead of QtDeclarative.
 	QQmlEngine *_m_animationEngine;
 	QQmlContext *_m_animationContext;
 	QQmlComponent *_m_animationComponent;
-#endif
 #endif
 
 private slots:
