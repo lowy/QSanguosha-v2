@@ -97,9 +97,3 @@ void Audio::stopBGM()
         BackgroudMusic->stop();
     }
 }
-
-QString Audio::getVersion()
-{
-	return QString();
-}
-

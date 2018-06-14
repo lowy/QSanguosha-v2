@@ -15,8 +15,6 @@ public:
     static void playBGM(const QString &filename);
     static void setBGMVolume(float volume);
     static void stopBGM();
-
-    static QString getVersion();
 };
 
 #endif
