@@ -2,7 +2,7 @@
 # Project created by QtCreator 2010-06-13T04:26:52
 # -------------------------------------------------
 TARGET = QSanguosha
-QT += network widgets
+QT += network widgets multimedia
 greaterThan(QT_MAJOR_VERSION, 4) {
 	!winrt: QT += qml quick
 } else {
@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 TEMPLATE = app
 
-CONFIG += lua
+CONFIG += lua audio
 
 CONFIG -= flat
 

@@ -3651,7 +3651,7 @@ void RoomScene::speak()
             Config.EnableBgMusic = true;
             Config.setValue("EnableBgMusic", true);
             _m_bgEnabled = true;
-            _m_bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.ogg").toString();
+            _m_bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.mp3").toString();
 #ifdef AUDIO_SUPPORT
             Audio::stopBGM();
             Audio::playBGM(_m_bgMusicPath);
@@ -3834,7 +3834,7 @@ void RoomScene::onGameStart()
     trust_button->setEnabled(true);
     if (Config.EnableBgMusic) {
         // start playing background music
-        _m_bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.ogg").toString();
+        _m_bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.mp3").toString();
 #ifdef AUDIO_SUPPORT
         Audio::playBGM(_m_bgMusicPath);
         Audio::setBGMVolume(Config.BGMVolume);
@@ -4803,7 +4803,7 @@ void RoomScene::updateVolumeConfig()
     if (!game_started) return;
     if (Config.EnableBgMusic) {
         // start playing background music
-        QString bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.ogg").toString();
+        QString bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.mp3").toString();
         bool modified = false;
         if (bgMusicPath != _m_bgMusicPath) {
 #ifdef AUDIO_SUPPORT
