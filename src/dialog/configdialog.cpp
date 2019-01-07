@@ -15,7 +15,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     if (!bg_path.startsWith(":"))
         ui->bgPathLineEdit->setText(bg_path);
 
-    ui->bgMusicPathLineEdit->setText(Config.value("BackgroundMusic", "audio/system/background.mp3").toString());
+    ui->bgMusicPathLineEdit->setText(Config.value("BackgroundMusic", "audio/system/background.ogg").toString());
 
     ui->enableEffectCheckBox->setChecked(Config.EnableEffects);
 
@@ -169,7 +169,7 @@ void ConfigDialog::on_browseBgMusicButton_clicked()
     QString filename = QFileDialog::getOpenFileName(this,
         tr("Select a background music"),
         "audio/system",
-        tr("Audio files (*.mp3)"));
+        tr("Audio files (*.wav *.mp3 *.ogg)"));
     if (!filename.isEmpty()) {
         QString app_path = QApplication::applicationDirPath();
         if (filename.startsWith(app_path))
@@ -181,7 +181,7 @@ void ConfigDialog::on_browseBgMusicButton_clicked()
 
 void ConfigDialog::on_resetBgMusicButton_clicked()
 {
-    QString default_music = "audio/system/background.mp3";
+    QString default_music = "audio/system/background.ogg";
     Config.setValue("BackgroundMusic", default_music);
     ui->bgMusicPathLineEdit->setText(default_music);
 }
@@ -226,4 +226,3 @@ void ConfigDialog::on_setTextEditColorButton_clicked()
         ui->textEditFontLineEdit->setPalette(palette);
     }
 }
-

@@ -433,7 +433,7 @@ void GeneralOverview::addLines(const Skill *skill)
         button->setEnabled(false);
         button_layout->addWidget(button);
     } else {
-        QRegExp rx(".+/(\\w+\\d?).mp3");
+        QRegExp rx(".+/(\\w+\\d?).ogg");
         for (int i = 0; i < sources.length(); i++) {
             QString source = sources[i];
             if (!rx.exactMatch(source))
@@ -527,7 +527,7 @@ void GeneralOverview::on_tableWidget_itemSelectionChanged()
         button_layout->addWidget(win_button);
         addCopyAction(win_button);
 
-        win_button->setObjectName("audio/system/win-cc.mp3");
+        win_button->setObjectName("audio/system/win-cc.ogg");
         connect(win_button, SIGNAL(clicked()), this, SLOT(playAudioEffect()));
     }
 
@@ -538,7 +538,7 @@ void GeneralOverview::on_tableWidget_itemSelectionChanged()
         button_layout->addWidget(stage_change_button);
         addCopyAction(stage_change_button);
 
-        stage_change_button->setObjectName("audio/system/stagechange.mp3");
+        stage_change_button->setObjectName("audio/system/stagechange.ogg");
         connect(stage_change_button, SIGNAL(clicked()), this, SLOT(playAudioEffect()));
     }
 

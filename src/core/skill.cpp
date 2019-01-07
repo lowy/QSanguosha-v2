@@ -107,7 +107,7 @@ void Skill::initMediaSource()
 {
     sources.clear();
     for (int i = 1;; i++) {
-        QString effect_file = QString("audio/skill/%1%2.mp3").arg(objectName()).arg(QString::number(i));
+        QString effect_file = QString("audio/skill/%1%2.ogg").arg(objectName()).arg(QString::number(i));
         if (QFile::exists(effect_file))
             sources << effect_file;
         else
@@ -115,7 +115,7 @@ void Skill::initMediaSource()
     }
 
     if (sources.isEmpty()) {
-        QString effect_file = QString("audio/skill/%1.mp3").arg(objectName());
+        QString effect_file = QString("audio/skill/%1.ogg").arg(objectName());
         if (QFile::exists(effect_file))
             sources << effect_file;
     }
@@ -641,4 +641,3 @@ void MarkAssignSkill::onGameStart(ServerPlayer *player) const
 {
     player->getRoom()->setPlayerMark(player, mark_name, player->getMark(mark_name) + n);
 }
-

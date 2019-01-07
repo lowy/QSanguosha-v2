@@ -1347,7 +1347,7 @@ QString Engine::getRandomGeneralName() const
 
 void Engine::playSystemAudioEffect(const QString &name, bool superpose) const
 {
-    playAudioEffect(QString("audio/system/%1.mp3").arg(name), superpose);
+    playAudioEffect(QString("audio/system/%1.ogg").arg(name), superpose);
 }
 
 void Engine::playAudioEffect(const QString &filename, bool superpose) const
