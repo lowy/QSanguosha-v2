@@ -2976,9 +2976,9 @@ void RoomScene::changeHp(const QString &who, int delta, DamageStruct::Nature nat
             photo->tremble();
         }
 
-        if (nature == DamageStruct::Fire)
+        if (nature == DamageStruct::Nature::Fire)
             doAnimation(S_ANIMATE_FIRE, QStringList() << who);
-        else if (nature == DamageStruct::Thunder)
+        else if (nature == DamageStruct::Nature::Thunder)
             doAnimation(S_ANIMATE_LIGHTNING, QStringList() << who);
     } else {
         QString type = "#Recover";
@@ -3273,7 +3273,7 @@ void DamageMakerDialog::accept()
 
     ClientInstance->requestCheatDamage(damage_source->itemData(damage_source->currentIndex()).toString(),
         damage_target->itemData(damage_target->currentIndex()).toString(),
-        (DamageStruct::Nature)damage_nature->itemData(damage_nature->currentIndex()).toInt(),
+        static_cast<DamageStruct::Nature>(damage_nature->itemData(damage_nature->currentIndex()).toInt()),
         damage_point->value());
 }
 

@@ -16,7 +16,7 @@
 Slash::Slash(Suit suit, int number) : BasicCard(suit, number)
 {
     setObjectName("slash");
-    nature = DamageStruct::Normal;
+    nature = DamageStruct::Nature::Normal;
     specific_assignee = QStringList();
 }
 
@@ -1280,7 +1280,7 @@ Lightning::Lightning(Suit suit, int number) :Disaster(suit, number)
 
 void Lightning::takeEffect(ServerPlayer *target) const
 {
-    target->getRoom()->damage(DamageStruct(this, NULL, target, 3, DamageStruct::Thunder));
+    target->getRoom()->damage(DamageStruct(this, NULL, target, 3, DamageStruct::Nature::Thunder));
 }
 
 // EX cards
@@ -1675,4 +1675,3 @@ LimitationBrokenPackage::LimitationBrokenPackage()
 ADD_PACKAGE(StandardCard)
 ADD_PACKAGE(StandardExCard)
 ADD_PACKAGE(LimitationBroken)
-

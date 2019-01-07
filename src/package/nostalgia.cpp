@@ -973,7 +973,7 @@ void NosFenchengCard::onEffect(const CardEffectStruct &effect) const
 
     int length = qMax(1, effect.to->getEquips().length());
     if (!effect.to->canDiscard(effect.to, "he") || !room->askForDiscard(effect.to, "nosfencheng", length, length, true, true))
-        room->damage(DamageStruct("nosfencheng", effect.from, effect.to, 1, DamageStruct::Fire));
+        room->damage(DamageStruct("nosfencheng", effect.from, effect.to, 1, DamageStruct::Nature::Fire));
 }
 
 class NosZhuikong : public TriggerSkill
@@ -1825,7 +1825,7 @@ public:
                 room->judge(judge);
 
                 if (judge.isBad())
-                    room->damage(DamageStruct(objectName(), zhangjiao, target, 2, DamageStruct::Thunder));
+                    room->damage(DamageStruct(objectName(), zhangjiao, target, 2, DamageStruct::Nature::Thunder));
             }
         }
         return false;

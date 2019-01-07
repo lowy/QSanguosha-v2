@@ -804,7 +804,7 @@ public:
             }
         } else if (triggerEvent == DamageInflicted && wuling == "earth") {
             DamageStruct damage = data.value<DamageStruct>();
-            if (damage.nature != DamageStruct::Normal && damage.damage > 1) {
+            if (damage.nature != DamageStruct::Nature::Normal && damage.damage > 1) {
                 damage.damage = 1;
                 data = QVariant::fromValue(damage);
 
@@ -842,7 +842,7 @@ public:
         DamageStruct damage = data.value<DamageStruct>();
 
         if (wuling == "wind") {
-            if (damage.nature == DamageStruct::Fire) {
+            if (damage.nature == DamageStruct::Nature::Fire) {
                 damage.damage++;
                 data = QVariant::fromValue(damage);
 
@@ -854,7 +854,7 @@ public:
                 room->sendLog(log);
             }
         } else if (wuling == "thunder") {
-            if (damage.nature == DamageStruct::Thunder) {
+            if (damage.nature == DamageStruct::Nature::Thunder) {
                 damage.damage++;
                 data = QVariant::fromValue(damage);
 
@@ -866,8 +866,8 @@ public:
                 room->sendLog(log);
             }
         } else if (wuling == "fire") {
-            if (damage.nature != DamageStruct::Fire) {
-                damage.nature = DamageStruct::Fire;
+            if (damage.nature != DamageStruct::Nature::Fire) {
+                damage.nature = DamageStruct::Nature::Fire;
                 data = QVariant::fromValue(damage);
 
                 LogMessage log;
@@ -1095,7 +1095,7 @@ public:
             }
         } else if (triggerEvent == DamageInflicted) {
             DamageStruct damage = data.value<DamageStruct>();
-            if (damage.nature != DamageStruct::Thunder && damage.from &&
+            if (damage.nature != DamageStruct::Nature::Thunder && damage.from &&
                 damage.from->isMale() != player->isMale()) {
 
                 LogMessage log;
@@ -1130,7 +1130,7 @@ public:
     {
         DamageStruct damage = data.value<DamageStruct>();
         if (triggerEvent == PreDamageDone) {
-            if (!player->isChained() && damage.from && damage.nature == DamageStruct::Fire && TriggerSkill::triggerable(damage.from)) {
+            if (!player->isChained() && damage.from && damage.nature == DamageStruct::Nature::Fire && TriggerSkill::triggerable(damage.from)) {
                 QList<ServerPlayer *> targets;
                 foreach (ServerPlayer *p, room->getAlivePlayers()) {
                     if (player->distanceTo(p) == 1)
@@ -1174,7 +1174,7 @@ public:
             if (judge.isGood()) {
                 room->broadcastSkillInvoke(objectName());
                 DamageStruct shaoying_damage;
-                shaoying_damage.nature = DamageStruct::Fire;
+                shaoying_damage.nature = DamageStruct::Nature::Fire;
                 shaoying_damage.from = damage.from;
                 shaoying_damage.to = target;
 

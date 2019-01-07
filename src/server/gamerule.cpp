@@ -129,55 +129,52 @@ bool GameRule::trigger(TriggerEvent triggerEvent, Room *room, ServerPlayer *play
         return false;
     }
 
-    // Handle global events
-    if (player == NULL) {
-        if (triggerEvent == GameStart) {
-            if (room->getMode() == "04_boss") {
-                int difficulty = Config.value("BossModeDifficulty", 0).toInt();
-                if ((difficulty & (1 << GameRule::BMDIncMaxHp)) > 0) {
-                    foreach (ServerPlayer *p, room->getPlayers()) {
-                        if (p->isLord()) continue;
-                        int m = p->getMaxHp() + 2;
-                        p->setProperty("maxhp", m);
-                        p->setProperty("hp", m);
-                        room->broadcastProperty(p, "maxhp");
-                        room->broadcastProperty(p, "hp");
-                    }
+    switch (triggerEvent) {
+    case GameStart: {
+        if(player != nullptr) break;
+        if (room->getMode() == "04_boss") {
+            int difficulty = Config.value("BossModeDifficulty", 0).toInt();
+            if ((difficulty & (1 << GameRule::BMDIncMaxHp)) > 0) {
+                foreach (ServerPlayer *p, room->getPlayers()) {
+                    if (p->isLord()) continue;
+                    int m = p->getMaxHp() + 2;
+                    p->setProperty("maxhp", m);
+                    p->setProperty("hp", m);
+                    room->broadcastProperty(p, "maxhp");
+                    room->broadcastProperty(p, "hp");
                 }
-            }
-            foreach (ServerPlayer *player, room->getPlayers()) {
-                if (player->getGeneral()->getKingdom() == "god" && player->getGeneralName() != "anjiang"
-                    && !player->getGeneralName().startsWith("boss_"))
-                    room->setPlayerProperty(player, "kingdom", room->askForKingdom(player));
-                foreach (const Skill *skill, player->getVisibleSkillList()) {
-                    if (skill->getFrequency() == Skill::Limited && !skill->getLimitMark().isEmpty()
-                        && (!skill->isLordSkill() || player->hasLordSkill(skill->objectName())))
-                        room->setPlayerMark(player, skill->getLimitMark(), 1);
-                }
-            }
-            room->setTag("FirstRound", true);
-            bool kof_mode = room->getMode() == "02_1v1" && Config.value("1v1/Rule", "2013").toString() != "Classical";
-            QList<int> n_list;
-            foreach (ServerPlayer *p, room->getPlayers()) {
-                int n = kof_mode ? p->getMaxHp() : 4;
-                QVariant data = n;
-                room->getThread()->trigger(DrawInitialCards, room, p, data);
-                n_list << data.toInt();
-            }
-            room->drawCards(room->getPlayers(), n_list, QString());
-            if (Config.EnableLuckCard)
-                room->askForLuckCard();
-            int i = 0;
-            foreach (ServerPlayer *p, room->getPlayers()) {
-                QVariant _nlistati = n_list.at(i);
-                room->getThread()->trigger(AfterDrawInitialCards, room, p, _nlistati);
-                i++;
             }
         }
-        return false;
+        foreach (ServerPlayer *player, room->getPlayers()) {
+            if (player->getGeneral()->getKingdom() == "god" && player->getGeneralName() != "anjiang"
+                && !player->getGeneralName().startsWith("boss_"))
+                room->setPlayerProperty(player, "kingdom", room->askForKingdom(player));
+            foreach (const Skill *skill, player->getVisibleSkillList()) {
+                if (skill->getFrequency() == Skill::Limited && !skill->getLimitMark().isEmpty()
+                    && (!skill->isLordSkill() || player->hasLordSkill(skill->objectName())))
+                    room->setPlayerMark(player, skill->getLimitMark(), 1);
+            }
+        }
+        room->setTag("FirstRound", true);
+        bool kof_mode = room->getMode() == "02_1v1" && Config.value("1v1/Rule", "2013").toString() != "Classical";
+        QList<int> n_list;
+        foreach (ServerPlayer *p, room->getPlayers()) {
+            int n = kof_mode ? p->getMaxHp() : 4;
+            QVariant data = n;
+            room->getThread()->trigger(DrawInitialCards, room, p, data);
+            n_list << data.toInt();
+        }
+        room->drawCards(room->getPlayers(), n_list, QString());
+        if (Config.EnableLuckCard)
+            room->askForLuckCard();
+        int i = 0;
+        foreach (ServerPlayer *p, room->getPlayers()) {
+            QVariant _nlistati = n_list.at(i);
+            room->getThread()->trigger(AfterDrawInitialCards, room, p, _nlistati);
+            i++;
+        }
+        break;
     }
-
-    switch (triggerEvent) {
     case TurnStart: {
         player = room->getCurrent();
         if (room->getTag("FirstRound").toBool()) {
@@ -427,9 +424,9 @@ bool GameRule::trigger(TriggerEvent triggerEvent, Room *room, ServerPlayer *play
         log.arg = QString::number(damage.damage);
 
         switch (damage.nature) {
-        case DamageStruct::Normal: log.arg2 = "normal_nature"; break;
-        case DamageStruct::Fire: log.arg2 = "fire_nature"; break;
-        case DamageStruct::Thunder: log.arg2 = "thunder_nature"; break;
+          case DamageStruct::Nature::Normal: log.arg2 = "normal_nature"; break;
+          case DamageStruct::Nature::Fire: log.arg2 = "fire_nature"; break;
+          case DamageStruct::Nature::Thunder: log.arg2 = "thunder_nature"; break;
         }
 
         room->sendLog(log);
@@ -438,18 +435,18 @@ bool GameRule::trigger(TriggerEvent triggerEvent, Room *room, ServerPlayer *play
 
         QString change_str = QString("%1:%2").arg(damage.to->objectName()).arg(-damage.damage);
         switch (damage.nature) {
-        case DamageStruct::Fire: change_str.append("F"); break;
-        case DamageStruct::Thunder: change_str.append("T"); break;
-        default: break;
+          case DamageStruct::Nature::Fire: change_str.append("F"); break;
+          case DamageStruct::Nature::Thunder: change_str.append("T"); break;
+          default: break;
         }
 
         JsonArray arg;
-        arg << damage.to->objectName() << -damage.damage << damage.nature;
+        arg << damage.to->objectName() << -damage.damage << static_cast<unsigned>(damage.nature);
         room->doBroadcastNotify(QSanProtocol::S_COMMAND_CHANGE_HP, arg);
 
         room->setTag("HpChangedData", data);
 
-        if (damage.nature != DamageStruct::Normal && player->isChained() && !damage.chain) {
+        if (damage.nature != DamageStruct::Nature::Normal && player->isChained() && !damage.chain) {
             int n = room->getTag("is_chained").toInt();
             n++;
             room->setTag("is_chained", n);
@@ -463,12 +460,12 @@ bool GameRule::trigger(TriggerEvent triggerEvent, Room *room, ServerPlayer *play
         DamageStruct damage = data.value<DamageStruct>();
         if (damage.prevented)
             break;
-        if (damage.nature != DamageStruct::Normal && player->isChained()) {
+        if (damage.nature != DamageStruct::Nature::Normal && player->isChained()) {
             room->setPlayerProperty(player, "chained", false);
             room->setEmotion(player, "chain");
         }
         if (room->getTag("is_chained").toInt() > 0) {
-            if (damage.nature != DamageStruct::Normal && !damage.chain) {
+            if (damage.nature != DamageStruct::Nature::Normal && !damage.chain) {
                 // iron chain effect
                 int n = room->getTag("is_chained").toInt();
                 n--;
@@ -1571,4 +1568,3 @@ bool BasaraMode::trigger(TriggerEvent triggerEvent, Room *room, ServerPlayer *pl
     }
     return false;
 }
-

@@ -283,7 +283,7 @@ public:
 
 void YeyanCard::damage(ServerPlayer *shenzhouyu, ServerPlayer *target, int point) const
 {
-    shenzhouyu->getRoom()->damage(DamageStruct("yeyan", shenzhouyu, target, point, DamageStruct::Fire));
+    shenzhouyu->getRoom()->damage(DamageStruct("yeyan", shenzhouyu, target, point, DamageStruct::Nature::Fire));
 }
 
 GreatYeyanCard::GreatYeyanCard()
@@ -1011,7 +1011,7 @@ public:
     bool trigger(TriggerEvent, Room *room, ServerPlayer *player, QVariant &data) const
     {
         DamageStruct damage = data.value<DamageStruct>();
-        if (damage.nature == DamageStruct::Fire) {
+        if (damage.nature == DamageStruct::Nature::Fire) {
             LogMessage log;
             log.type = "#GalePower";
             log.from = player;
@@ -1096,14 +1096,14 @@ public:
     bool trigger(TriggerEvent, Room *room, ServerPlayer *player, QVariant &data) const
     {
         DamageStruct damage = data.value<DamageStruct>();
-        if (damage.nature != DamageStruct::Thunder) {
+        if (damage.nature != DamageStruct::Nature::Thunder) {
             LogMessage log;
             log.type = "#FogProtect";
             log.from = player;
             log.arg = QString::number(damage.damage);
-            if (damage.nature == DamageStruct::Normal)
+            if (damage.nature == DamageStruct::Nature::Normal)
                 log.arg2 = "normal_nature";
-            else if (damage.nature == DamageStruct::Fire)
+            else if (damage.nature == DamageStruct::Nature::Fire)
                 log.arg2 = "fire_nature";
             room->sendLog(log);
 
@@ -1645,4 +1645,3 @@ GodPackage::GodPackage()
 }
 
 ADD_PACKAGE(God)
-

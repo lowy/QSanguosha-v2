@@ -96,7 +96,7 @@ public:
                     room->judge(judge);
 
                     if (judge.isBad())
-                        room->damage(DamageStruct(objectName(), zhangjiao, target, 1, DamageStruct::Thunder));
+                        room->damage(DamageStruct(objectName(), zhangjiao, target, 1, DamageStruct::Nature::Thunder));
                 }
             }
         } else if (triggerEvent == DamageCaused && zhangjiao->isAlive() && zhangjiao->isWounded()) {
@@ -1411,4 +1411,3 @@ WindPackage::WindPackage()
 }
 
 ADD_PACKAGE(Wind)
-

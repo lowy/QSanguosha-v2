@@ -32,7 +32,7 @@ QVariant LogMessage::toVariant() const
 }
 
 DamageStruct::DamageStruct()
-    : from(NULL), to(NULL), card(NULL), damage(1), nature(Normal), chain(false),
+    : from(NULL), to(NULL), card(NULL), damage(1), nature(Nature::Normal), chain(false),
     transfer(false), by_user(true), reason(QString()), transfer_reason(QString())
 {
 }
@@ -72,7 +72,7 @@ CardEffectStruct::CardEffectStruct()
 }
 
 SlashEffectStruct::SlashEffectStruct()
-    : jink_num(1), slash(NULL), jink(NULL), from(NULL), to(NULL), drank(0), nature(DamageStruct::Normal), nullified(false)
+    : jink_num(1), slash(NULL), jink(NULL), from(NULL), to(NULL), drank(0), nature(DamageStruct::Nature::Normal), nullified(false)
 {
 }
 
@@ -759,4 +759,3 @@ void RoomThread::delay(long secs)
     if (room->property("to_test").toString().isEmpty() && Config.AIDelay > 0)
         msleep(secs);
 }
-

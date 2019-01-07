@@ -22,16 +22,16 @@ bool NatureSlash::match(const QString &pattern) const
 }
 
 ThunderSlash::ThunderSlash(Suit suit, int number)
-    : NatureSlash(suit, number, DamageStruct::Thunder)
+    : NatureSlash(suit, number, DamageStruct::Nature::Thunder)
 {
     setObjectName("thunder_slash");
 }
 
 FireSlash::FireSlash(Suit suit, int number)
-    : NatureSlash(suit, number, DamageStruct::Fire)
+    : NatureSlash(suit, number, DamageStruct::Nature::Fire)
 {
     setObjectName("fire_slash");
-    nature = DamageStruct::Fire;
+    nature = DamageStruct::Nature::Fire;
 }
 
 Analeptic::Analeptic(Card::Suit suit, int number)
@@ -173,7 +173,7 @@ public:
     {
         if (triggerEvent == SlashEffected) {
             SlashEffectStruct effect = data.value<SlashEffectStruct>();
-            if (effect.nature == DamageStruct::Normal) {
+            if (effect.nature == DamageStruct::Nature::Normal) {
                 room->setEmotion(player, "armor/vine");
                 LogMessage log;
                 log.from = player;
@@ -201,7 +201,7 @@ public:
             }
         } else if (triggerEvent == DamageInflicted) {
             DamageStruct damage = data.value<DamageStruct>();
-            if (damage.nature == DamageStruct::Fire) {
+            if (damage.nature == DamageStruct::Nature::Fire) {
                 room->setEmotion(player, "armor/vineburn");
                 LogMessage log;
                 log.type = "#VineDamage";
@@ -313,7 +313,7 @@ void FireAttack::onEffect(const CardEffectStruct &effect) const
     if (effect.from->isAlive()) {
         const Card *card_to_throw = room->askForCard(effect.from, pattern, prompt);
         if (card_to_throw)
-            room->damage(DamageStruct(this, effect.from, effect.to, 1, DamageStruct::Fire));
+            room->damage(DamageStruct(this, effect.from, effect.to, 1, DamageStruct::Nature::Fire));
         else
             effect.from->setFlags("FireAttackFailed_" + effect.to->objectName()); // For AI
     }
@@ -511,4 +511,3 @@ ManeuveringPackage::ManeuveringPackage()
 }
 
 ADD_PACKAGE(Maneuvering)
-

@@ -42,7 +42,8 @@
 ** By default, Lua uses tmpnam except when POSIX is available, where it
 ** uses mkstemp.
 */
-#if defined(LUA_USE_MKSTEMP)
+
+#if defined(__linux__)
 #include <unistd.h>
 #define LUA_TMPNAMBUFSIZE	32
 #define lua_tmpnam(b,e) { \
@@ -322,4 +323,3 @@ LUAMOD_API int luaopen_os (lua_State *L) {
   luaL_newlib(L, syslib);
   return 1;
 }
-

@@ -234,7 +234,7 @@ public:
             if (burned) return false;
 
             DamageStruct damage = data.value<DamageStruct>();
-            if (player->getGeneralName() == "yuanshao" && damage.nature == DamageStruct::Fire
+            if (player->getGeneralName() == "yuanshao" && damage.nature == DamageStruct::Nature::Fire
                 && damage.from->getRoleEnum() == Player::Rebel) {
                 room->setTag("BurnWuchao", true);
 

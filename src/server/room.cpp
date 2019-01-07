@@ -3618,7 +3618,7 @@ void Room::damage(const DamageStruct &data)
             setTag("CurrentDamageStruct", qdata);
 
             thread->trigger(PreDamageDone, this, damage_data.to, qdata);
-            
+
             if (damage_data.from != NULL) {
                 int d = qdata.value<DamageStruct>().damage;
                 int f = damage_data.from->getMark("damage_point_round");
@@ -4450,7 +4450,7 @@ void Room::changePlayerGeneral(ServerPlayer *player, const QString &new_general)
 {
     if (player->getGeneral() != NULL) {
         foreach(const Skill *skill, player->getGeneral()->getSkillList())
-            player->loseSkill(skill->objectName());        
+            player->loseSkill(skill->objectName());
     }
     setPlayerProperty(player, "general", new_general);
     player->setGender(player->getGeneral()->getGender());
@@ -4467,7 +4467,7 @@ void Room::changePlayerGeneral2(ServerPlayer *player, const QString &new_general
 {
     if (player->getGeneral2() != NULL) {
         foreach(const Skill *skill, player->getGeneral2()->getSkillList())
-            player->loseSkill(skill->objectName());        
+            player->loseSkill(skill->objectName());
     }
     setPlayerProperty(player, "general2", new_general);
     foreach(const Skill *skill, player->getVisibleSkillList())
@@ -5498,9 +5498,9 @@ void Room::makeDamage(const QString &source, const QString &target, QSanProtocol
 
     static QMap<QSanProtocol::CheatCategory, DamageStruct::Nature> nature_map;
     if (nature_map.isEmpty()) {
-        nature_map[S_CHEAT_NORMAL_DAMAGE] = DamageStruct::Normal;
-        nature_map[S_CHEAT_THUNDER_DAMAGE] = DamageStruct::Thunder;
-        nature_map[S_CHEAT_FIRE_DAMAGE] = DamageStruct::Fire;
+        nature_map[S_CHEAT_NORMAL_DAMAGE] = DamageStruct::Nature::Normal;
+        nature_map[S_CHEAT_THUNDER_DAMAGE] = DamageStruct::Nature::Thunder;
+        nature_map[S_CHEAT_FIRE_DAMAGE] = DamageStruct::Nature::Fire;
     }
 
     if (targetPlayer == NULL) return;

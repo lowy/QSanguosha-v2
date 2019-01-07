@@ -456,7 +456,7 @@ struct DamageStruct {
     DamageStruct(const Card *card, ServerPlayer *from, ServerPlayer *to, int damage = 1, DamageStruct::Nature nature = Normal);
     DamageStruct(const char *reason, ServerPlayer *from, ServerPlayer *to, int damage = 1, DamageStruct::Nature nature = Normal);
 
-    enum Nature {
+    enum class Nature {
         Normal, // normal slash, duel and most damage caused by skill
         Fire,  // fire slash, fire attack and few damage skill (Yeyan, etc)
         Thunder // lightning, thunder slash, and few damage skill (Leiji, etc)
@@ -1120,7 +1120,7 @@ public:
     void broadcastSkillInvoke(const char *skillName, bool isMale, int type);
     void doLightbox(const char *lightboxName, int duration = 2000, int pixelSize = 0);
     void doAnimate(int type, const char *arg1 = NULL, const char *arg2 = NULL, QList<ServerPlayer *> players = QList<ServerPlayer *>());
-    
+
     void doSuperLightbox(const char *heroName, const char *skillName);
 
     bool notifyMoveCards(bool isLostPhase, QList<CardsMoveStruct> &cards_moves, bool forceVisible, QList<ServerPlayer *> players = QList<ServerPlayer *>());
@@ -1234,7 +1234,7 @@ public:
     bool doNotify(ServerPlayer *player, int command, const char *arg);
     bool doBroadcastNotify(int command, const char *arg);
     bool doBroadcastNotify(const QList<ServerPlayer *> &players, int command, const char *arg);
-    
+
     bool doNotify(ServerPlayer *player, int command, const QVariant &arg);
     bool doBroadcastNotify(int command, const QVariant &arg);
     bool doBroadcastNotify(const QList<ServerPlayer *> &players, int command, const QVariant &arg);

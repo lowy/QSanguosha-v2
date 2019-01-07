@@ -77,13 +77,13 @@ public:
                 case Card::Heart:
                     log.type = "$ShitDamage";
                     room->sendLog(log);
-                    room->damage(DamageStruct(shit, player, player, 1, DamageStruct::Fire));
+                    room->damage(DamageStruct(shit, player, player, 1, DamageStruct::Nature::Fire));
                     break;
 
                 case Card::Club:
                     log.type = "$ShitDamage";
                     room->sendLog(log);
-                    room->damage(DamageStruct(shit, player, player, 1, DamageStruct::Thunder));
+                    room->damage(DamageStruct(shit, player, player, 1, DamageStruct::Nature::Thunder));
                     break;
 
                 case Card::Diamond:
@@ -153,7 +153,7 @@ void Deluge::takeEffect(ServerPlayer *target) const
             card_ids.removeOne(card_id);
 
             room->takeAG(player, card_id, false);
-            
+
             room->moveCardTo(Sanguosha->getCard(card_id), player, Player::PlaceHand, true);
         }
     }
@@ -240,7 +240,7 @@ void Volcano::takeEffect(ServerPlayer *target) const
     damage.card = this;
     damage.damage = 2;
     damage.to = target;
-    damage.nature = DamageStruct::Fire;
+    damage.nature = DamageStruct::Nature::Fire;
     room->damage(damage);
 
     QList<ServerPlayer *> players = room->getAllPlayers();
@@ -254,7 +254,7 @@ void Volcano::takeEffect(ServerPlayer *target) const
             damage.card = this;
             damage.damage = 1;
             damage.to = player;
-            damage.nature = DamageStruct::Fire;
+            damage.nature = DamageStruct::Nature::Fire;
             room->damage(damage);
         }
     }
@@ -351,7 +351,7 @@ public:
     bool trigger(TriggerEvent, Room *room, ServerPlayer *player, QVariant &data) const
     {
         DamageStruct damage = data.value<DamageStruct>();
-        if (damage.nature == DamageStruct::Fire) {
+        if (damage.nature == DamageStruct::Nature::Fire) {
             LogMessage log;
             log.type = "#GaleShellDamage";
             log.from = player;

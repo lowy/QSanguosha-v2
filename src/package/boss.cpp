@@ -129,7 +129,7 @@ public:
         ServerPlayer *player = room->askForPlayerChosen(target, room->getOtherPlayers(target), objectName(), "bossluolei-invoke", true, true);
         if (player) {
             room->broadcastSkillInvoke(objectName());
-            room->damage(DamageStruct(objectName(), target, player, 1, DamageStruct::Thunder));
+            room->damage(DamageStruct(objectName(), target, player, 1, DamageStruct::Nature::Thunder));
         }
         return false;
     }
@@ -150,7 +150,7 @@ public:
         ServerPlayer *player = room->askForPlayerChosen(target, room->getOtherPlayers(target), objectName(), "bossguihuo-invoke", true, true);
         if (player) {
             room->broadcastSkillInvoke(objectName());
-            room->damage(DamageStruct(objectName(), target, player, 1, DamageStruct::Fire));
+            room->damage(DamageStruct(objectName(), target, player, 1, DamageStruct::Nature::Fire));
         }
         return false;
     }
@@ -179,7 +179,7 @@ public:
         room->sendCompulsoryTriggerLog(player, objectName());
 
         foreach(ServerPlayer *p, room->getOtherPlayers(player))
-            room->damage(DamageStruct(objectName(), NULL, p, 1, DamageStruct::Fire));
+            room->damage(DamageStruct(objectName(), NULL, p, 1, DamageStruct::Nature::Fire));
         return false;
     }
 };
@@ -228,7 +228,7 @@ public:
     {
         if (triggerEvent == SlashEffected) {
             SlashEffectStruct effect = data.value<SlashEffectStruct>();
-            if (effect.nature == DamageStruct::Normal) {
+            if (effect.nature == DamageStruct::Nature::Normal) {
                 room->broadcastSkillInvoke(objectName());
                 room->sendCompulsoryTriggerLog(player, objectName());
 
@@ -262,7 +262,7 @@ public:
             }
         } else if (triggerEvent == DamageInflicted) {
             DamageStruct damage = data.value<DamageStruct>();
-            if (damage.nature == DamageStruct::Fire) {
+            if (damage.nature == DamageStruct::Nature::Fire) {
                 room->broadcastSkillInvoke(objectName());
                 room->sendCompulsoryTriggerLog(player, objectName());
 
@@ -349,7 +349,7 @@ public:
         if (room->askForSkillInvoke(target, objectName())) {
             room->broadcastSkillInvoke(objectName());
             foreach(ServerPlayer *p, room->getOtherPlayers(target))
-                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Fire));
+                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Nature::Fire));
         }
         return false;
     }
@@ -430,7 +430,7 @@ public:
             room->broadcastSkillInvoke(objectName());
             target->setFlags("bossxixing");
             try {
-                room->damage(DamageStruct(objectName(), target, player, 1, DamageStruct::Thunder));
+                room->damage(DamageStruct(objectName(), target, player, 1, DamageStruct::Nature::Thunder));
                 if (target->isAlive() && target->hasFlag("bossxixing")) {
                     target->setFlags("-bossxixing");
                     if (target->isWounded())

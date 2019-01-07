@@ -404,7 +404,7 @@ public:
     bool trigger(TriggerEvent, Room *room, ServerPlayer *player, QVariant &data) const
     {
         DamageStruct damage = data.value<DamageStruct>();
-        if (damage.nature == DamageStruct::Fire) {
+        if (damage.nature == DamageStruct::Nature::Fire) {
             room->notifySkillInvoked(player, objectName());
             room->broadcastSkillInvoke(objectName());
 
@@ -567,7 +567,7 @@ public:
                 if (card->isBlack())
                     return true;
             }
-            
+
             foreach(int id, player->getHandPile())  {
                 if (Sanguosha->getCard(id)->isBlack())
                     return true;
@@ -1964,7 +1964,7 @@ public:
 
         if (e == Damage && damage.to == player)
             return false;
-            
+
         for (int i = 0; i < damage.damage; ++i) {
             if (!room->askForUseCard(p, "@@bushi", "@bushi", -1, Card::MethodNone))
                 break;
@@ -2275,7 +2275,7 @@ public:
 
             if (c == NULL || c->isKindOf("SkillCard"))
                 return false;
-            
+
             if (triggerEvent == PreCardUsed && !player->hasFlag("fengporec"))
                 room->setCardFlag(c, "fengporecc");
 
@@ -3016,7 +3016,7 @@ public:
                     damage.to = victim;
                     damage.reason = "olleiji";
                     damage.damage = 2;
-                    damage.nature = DamageStruct::Thunder;
+                    damage.nature = DamageStruct::Nature::Thunder;
                     room->damage(damage);
                 }
                 else if (suit == Card::Club) {
@@ -3031,7 +3031,7 @@ public:
                     damage.to = victim;
                     damage.reason = "olleiji";
                     damage.damage = 1;
-                    damage.nature = DamageStruct::Thunder;
+                    damage.nature = DamageStruct::Nature::Thunder;
                     room->damage(damage);
                 }
             }
@@ -3130,7 +3130,7 @@ OLPackage::OLPackage()
     related_skills.insertMulti("zhanyi", "#zhanyi-basic");
     related_skills.insertMulti("zhanyi", "#zhanyi-equip");
     related_skills.insertMulti("zhanyi", "#zhanyi-trick");
-    
+
     General *zhugeguo = new General(this, "zhugeguo", "shu", 3, false);
     zhugeguo->addSkill(new OlYuhua);
     zhugeguo->addSkill(new OlQirang);

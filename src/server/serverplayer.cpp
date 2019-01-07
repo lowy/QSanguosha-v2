@@ -732,8 +732,7 @@ void ServerPlayer::play(QList<Player::Phase> set_phases)
         if (!set_phases.contains(NotActive))
             set_phases << NotActive;
     } else
-        set_phases << RoundStart << Start << Judge << Draw << Play
-        << Discard << Finish << NotActive;
+        set_phases << RoundStart << Start << Judge << Draw << Play << Discard << Finish << NotActive;
 
     phases = set_phases;
     _m_phases_state.clear();
@@ -1318,4 +1317,3 @@ bool ServerPlayer::CompareByActionOrder(ServerPlayer *a, ServerPlayer *b)
     Room *room = a->getRoom();
     return room->getFront(a, b) == a;
 }
-

@@ -10,7 +10,7 @@ class Slash;
 
 struct DamageStruct
 {
-    enum Nature
+    enum class Nature // 普通伤害，火焰伤害，雷电伤害
     {
         Normal, // normal slash, duel and most damage caused by skill
         Fire,  // fire slash, fire attack and few damage skill (Yeyan, etc)
@@ -18,8 +18,8 @@ struct DamageStruct
     };
 
     DamageStruct();
-    DamageStruct(const Card *card, ServerPlayer *from, ServerPlayer *to, int damage = 1, Nature nature = Normal);
-    DamageStruct(const QString &reason, ServerPlayer *from, ServerPlayer *to, int damage = 1, Nature nature = Normal);
+    DamageStruct(const Card *card, ServerPlayer *from, ServerPlayer *to, int damage = 1, Nature nature = Nature::Normal);
+    DamageStruct(const QString &reason, ServerPlayer *from, ServerPlayer *to, int damage = 1, Nature nature = Nature::Normal);
 
     ServerPlayer *from;
     ServerPlayer *to;
@@ -567,4 +567,3 @@ Q_DECLARE_METATYPE(ServerPlayer *)
 Q_DECLARE_METATYPE(JudgeStruct *)
 Q_DECLARE_METATYPE(PindianStruct *)
 #endif
-

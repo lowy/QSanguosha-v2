@@ -1790,7 +1790,7 @@ public:
     {
         if (card->isKindOf("Slash"))
             return -2;
-        
+
         return -1;
     }
 };
@@ -2443,7 +2443,7 @@ public:
             room->drawCards(target, qMin(5, from_handcard_num) - handcard_num, objectName());
         } else if (handcard_num > from_handcard_num) {
             room->setPlayerMark(target, objectName(), from_handcard_num + 1);
-            //if (room->askForUseCard(target, "@@benyu", QString("@benyu-discard::%1:%2").arg(damage.from->objectName()).arg(from_handcard_num + 1), -1, Card::MethodDiscard)) 
+            //if (room->askForUseCard(target, "@@benyu", QString("@benyu-discard::%1:%2").arg(damage.from->objectName()).arg(from_handcard_num + 1), -1, Card::MethodDiscard))
             if (room->askForCard(target, "@@benyu", QString("@benyu-discard::%1:%2").arg(damage.from->objectName()).arg(from_handcard_num + 1), QVariant(), objectName())) {
                 room->broadcastSkillInvoke(objectName(), 2);
                 room->damage(DamageStruct(objectName(), target, damage.from));
@@ -2498,7 +2498,7 @@ public:
     {
         if (triggerEvent == DamageCaused) {
             DamageStruct damage = data.value<DamageStruct>();
-            if (damage.nature != DamageStruct::Thunder || !damage.from)
+            if (damage.nature != DamageStruct::Nature::Thunder || !damage.from)
                 return false;
             foreach (ServerPlayer *p, room->getAllPlayers()) {
                 if (TriggerSkill::triggerable(p) && room->askForSkillInvoke(p, objectName(), data)) {
@@ -3302,5 +3302,3 @@ HegemonySPPackage::HegemonySPPackage()
 }
 
 ADD_PACKAGE(HegemonySP)
-
-

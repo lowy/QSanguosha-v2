@@ -1147,7 +1147,7 @@ void MiejiCard::onEffect(const CardEffectStruct &effect) const
     Room *room = effect.from->getRoom();
     CardMoveReason reason(CardMoveReason::S_REASON_PUT, effect.from->objectName(), QString(), "mieji", QString());
     room->moveCardTo(this, effect.from, NULL, Player::DrawPile, reason, true);
-    
+
     /*
     int trick_num = 0, nontrick_num = 0;
     foreach (const Card *c, effect.to->getCards("he")) {
@@ -1182,14 +1182,14 @@ void MiejiCard::onEffect(const CardEffectStruct &effect) const
     else if (cards.length() == 2) {
         bool bothTrick = true;
         int trickId = -1;
-        
+
         foreach (const Card *c, cards) {
             if (c->getTypeId() != Card::TypeTrick)
                 bothTrick = false;
             else
                 trickId = c->getId();
         }
-        
+
         instanceDiscard = !bothTrick;
         instanceDiscardId = trickId;
     }
@@ -1386,7 +1386,7 @@ void FenchengCard::onEffect(const CardEffectStruct &effect) const
     if (!effect.to->canDiscard(effect.to, "he") || effect.to->getCardCount(true) < length
         || !room->askForDiscard(effect.to, "fencheng", 1000, length, true, true, "@fencheng:::" + QString::number(length))) {
         room->setTag("FenchengDiscard", 0);
-        room->damage(DamageStruct("fencheng", effect.from, effect.to, 2, DamageStruct::Fire));
+        room->damage(DamageStruct("fencheng", effect.from, effect.to, 2, DamageStruct::Nature::Fire));
     }
 }
 

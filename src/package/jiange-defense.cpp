@@ -95,7 +95,7 @@ public:
         if (target->getLostHp() >= enemy_num && room->askForSkillInvoke(target, objectName())) {
             room->broadcastSkillInvoke(objectName());
             foreach(ServerPlayer *p, enemies) {
-                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Thunder));
+                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Nature::Thunder));
                 if (target->isWounded())
                     room->recover(target, RecoverStruct(target));
             }
@@ -149,7 +149,7 @@ public:
             room->sendCompulsoryTriggerLog(target, objectName());
 
             foreach(ServerPlayer *p, enemies)
-                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Thunder));
+                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Nature::Thunder));
         }
         return false;
     }
@@ -202,7 +202,7 @@ public:
             ServerPlayer *target = room->askForPlayerChosen(player, enemies, objectName(), "jgleili-invoke", true, true);
             if (target) {
                 room->broadcastSkillInvoke(objectName());
-                room->damage(DamageStruct(objectName(), player, target, 1, DamageStruct::Thunder));
+                room->damage(DamageStruct(objectName(), player, target, 1, DamageStruct::Nature::Thunder));
             }
         }
         return false;
@@ -386,7 +386,7 @@ public:
                     enemies << p;
             }
             foreach(ServerPlayer *p, enemies)
-                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Fire));
+                room->damage(DamageStruct(objectName(), target, p, 1, DamageStruct::Nature::Fire));
         }
         return false;
     }
@@ -627,7 +627,7 @@ public:
             if (choice == "recover")
                 room->recover(defensive_machine, RecoverStruct(target));
             else
-                room->damage(DamageStruct(objectName(), target, offensive_machine, 1, DamageStruct::Fire));
+                room->damage(DamageStruct(objectName(), target, offensive_machine, 1, DamageStruct::Nature::Fire));
         }
         return false;
     }
@@ -734,7 +734,7 @@ public:
     bool trigger(TriggerEvent, Room *room, ServerPlayer *player, QVariant &data) const
     {
         DamageStruct damage = data.value<DamageStruct>();
-        if (damage.nature == DamageStruct::Fire) {
+        if (damage.nature == DamageStruct::Nature::Fire) {
             room->broadcastSkillInvoke(objectName());
             room->notifySkillInvoked(player, objectName());
 
@@ -886,7 +886,7 @@ public:
 
         foreach (ServerPlayer *p, room->getAllPlayers()) {
             if (!isJianGeFriend(p, target) && p->property("jiange_defense_type").toString() == "machine") {
-                room->damage(DamageStruct(objectName(), target, p, 2, DamageStruct::Thunder));
+                room->damage(DamageStruct(objectName(), target, p, 2, DamageStruct::Nature::Thunder));
                 break;
             }
         }
@@ -941,7 +941,7 @@ public:
             room->broadcastSkillInvoke(objectName());
             room->loseHp(target);
 
-            room->damage(DamageStruct(objectName(), target, player, 2, DamageStruct::Fire));
+            room->damage(DamageStruct(objectName(), target, player, 2, DamageStruct::Nature::Fire));
             player->throwAllEquips();
         }
         return false;
