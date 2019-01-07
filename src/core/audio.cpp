@@ -26,7 +26,7 @@ public:
         } else {
             QString AudioPrefix = QCoreApplication::applicationDirPath();
             this->path = QString("%1/%2").arg(AudioPrefix).arg(filename);
-            this->setMedia(QUrl::fromLocalFile(this->path));
+            this->setMedia(QUrl::fromLocalFile(QFileInfo(filename).absoluteFilePath()));
         }
     }
 
