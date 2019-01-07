@@ -3424,10 +3424,11 @@ void Room::loseHp(ServerPlayer *victim, int lose)
     log.arg = QString::number(lose);
     sendLog(log);
 
+    bool has_source = false;
     JsonArray arg;
     arg << victim->objectName();
     arg << -lose;
-    arg << -1;
+    arg << has_source;
     doBroadcastNotify(S_COMMAND_CHANGE_HP, arg);
 
     setTag("HpChangedData", data);

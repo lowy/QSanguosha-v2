@@ -2939,7 +2939,7 @@ void RoomScene::startInXs()
     if (return_to_main_menu) return_to_main_menu->hide();
 }
 
-void RoomScene::changeHp(const QString &who, int delta, DamageStruct::Nature nature, bool losthp)
+void RoomScene::changeHp(const QString &who, int delta, DamageStruct::Nature nature, bool has_source)
 {
     // update
     Photo *photo = name2photo.value(who, NULL);
@@ -2952,7 +2952,7 @@ void RoomScene::changeHp(const QString &who, int delta, DamageStruct::Nature nat
     QString hp = QString::number(player->getHp() + delta);
     QString maxhp = QString::number(player->getMaxHp());
     if (delta < 0) {
-        if (losthp) {
+        if (has_source) {
             Sanguosha->playSystemAudioEffect("hplost");
             QString from_general = ClientInstance->getPlayer(who)->objectName();
             log_box->appendLog("#GetHp", from_general, QStringList(), QString(), hp, maxhp);

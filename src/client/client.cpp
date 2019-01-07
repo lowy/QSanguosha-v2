@@ -635,7 +635,8 @@ void Client::hpChange(const QVariant &change_str)
         nature = DamageStruct::Nature::Fire;
     if (nature_index == 2)
         nature = DamageStruct::Nature::Thunder;
-    emit hp_changed(who, delta, nature, nature_index == -1); // oytodo: nature_index deprecated.
+    bool has_source = true;
+    emit hp_changed(who, delta, nature, has_source);
 }
 
 void Client::maxhpChange(const QVariant &change_str)

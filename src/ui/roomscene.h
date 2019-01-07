@@ -398,7 +398,7 @@ private slots:
     void doTimeout();
     void startInXs();
     void hideAvatars();
-    void changeHp(const QString &who, int delta, DamageStruct::Nature nature, bool losthp);
+    void changeHp(const QString &who, int delta, DamageStruct::Nature nature, bool has_source);
     void changeMaxHp(const QString &who, int delta);
     void moveFocus(const QStringList &who, QSanProtocol::Countdown);
     void setEmotion(const QString &who, const QString &emotion);
@@ -462,4 +462,3 @@ signals:
 extern RoomScene *RoomSceneInstance;
 
 #endif
-
