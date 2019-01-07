@@ -23,16 +23,6 @@ debugQSanguosha: $(DEBUG_BUILD)/QSanguosha
 	cp $(DEBUG_BUILD)/QSanguosha debugQSanguosha
 	@rm $(DEBUG_BUILD)/QSanguosha
 
-$(BUILD)/libfmodex.so:
-	mkdir -p $(BUILD)
-	@echo "NOTE: if you had installed fmodex please copy the .so file from /usr/local/lib/ to $(BUILD)/libfmodex.so"
-	@ls $@
-
-$(DEBUG_BUILD)/libfmodex.so:
-	mkdir -p $(DEBUG_BUILD)
-	@echo "NOTE: if you had installed fmodex please copy the .so file from /usr/local/lib/ to $(DEBUG_BUILD)/libfmodex.so"
-	@ls $@
-
 swig/sanguosha_wrap.cxx: swig/ai.i swig/card.i swig/list.i swig/luaskills.i swig/native.i swig/naturalvar.i swig/qvariant.i swig/sanguosha.i
 	cd swig && swig -c++ -lua sanguosha.i
 
@@ -50,14 +40,14 @@ $(DEBUG_BUILD)/swig/sanguosha_wrap.cxx: swig/sanguosha_wrap.cxx
 	mkdir -p $(DEBUG_BUILD)/swig
 	cp $(PWD)/swig/sanguosha_wrap.cxx $(DEBUG_BUILD)/swig/sanguosha_wrap.cxx
 
-$(BUILD)/QSanguosha: $(BUILD)/libfmodex.so $(BUILD)/swig/sanguosha_wrap.cxx $(BUILD)/Makefile
+$(BUILD)/QSanguosha: $(BUILD)/swig/sanguosha_wrap.cxx $(BUILD)/Makefile
 	@echo "PWD is: $(OLDPWD)"
 	@ln -sf linux.mk Makefile
 	cd $(BUILD) && $(MAKE)
 	@rm -f QSanguosha
 	@ln -sf $(BUILD)/QSanguosha QSanguosha
 
-$(DEBUG_BUILD)/QSanguosha: $(DEBUG_BUILD)/libfmodex.so $(DEBUG_BUILD)/swig/sanguosha_wrap.cxx $(DEBUG_BUILD)/Makefile
+$(DEBUG_BUILD)/QSanguosha: $(DEBUG_BUILD)/swig/sanguosha_wrap.cxx $(DEBUG_BUILD)/Makefile
 	@echo "PWD is: $(OLDPWD)"
 	@ln -sf linux.mk Makefile
 	cd $(DEBUG_BUILD) && $(MAKE)
