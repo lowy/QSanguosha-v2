@@ -2,9 +2,9 @@
 # Project created by QtCreator 2010-06-13T04:26:52
 # -------------------------------------------------
 TARGET = QSanguosha
-QT += network widgets multimedia
+QT += network widgets multimedia quick
 
-!winrt: QT += qml quick
+!winrt: QT += qml
 
 TEMPLATE = app
 

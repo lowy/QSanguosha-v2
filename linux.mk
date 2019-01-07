@@ -12,8 +12,8 @@
 
 PREFIX:=/usr/local
 OLDPWD:=$(PWD)
-BUILD:=$(OLDPWD)_build
-DEBUG_BUILD:=$(OLDPWD)_debugbuild
+BUILD:=$(PWD)/build
+DEBUG_BUILD:=$(PWD)/debug_build
 
 all: sanguosha.qm
 
@@ -27,10 +27,10 @@ swig/sanguosha_wrap.cxx: swig/ai.i swig/card.i swig/list.i swig/luaskills.i swig
 	cd swig && swig -c++ -lua sanguosha.i
 
 $(BUILD)/Makefile: $(OLDPWD)/QSanguosha.pro
-	cd $(BUILD) && qmake $(OLDPWD)/QSanguosha.pro "CONFIG+=release"
+	cd $(BUILD) && qmake-qt5 $(OLDPWD)/QSanguosha.pro "CONFIG+=release"
 
 $(DEBUG_BUILD)/Makefile: $(OLDPWD)/QSanguosha.pro
-	cd $(DEBUG_BUILD) && qmake $(OLDPWD)/QSanguosha.pro "CONFIG+=debug"
+	cd $(DEBUG_BUILD) && qmake-qt5 $(OLDPWD)/QSanguosha.pro "CONFIG+=debug"
 
 $(BUILD)/swig/sanguosha_wrap.cxx: swig/sanguosha_wrap.cxx
 	mkdir -p $(BUILD)/swig

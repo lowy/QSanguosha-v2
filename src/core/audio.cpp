@@ -81,7 +81,8 @@ void Audio::playBGM(const QString &filename)
         BackgroudMusic->stop();
         BgmList->removeMedia(BgmList->currentIndex());
     }
-    BgmList->addMedia(QUrl::fromLocalFile(filename));
+
+    BgmList->addMedia(QUrl::fromLocalFile(QFileInfo(filename).absoluteFilePath()));
     BgmList->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
     BackgroudMusic->play();
 }
